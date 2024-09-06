@@ -12,14 +12,16 @@ import LoadingButton from "../../../components/LoadingButton";
 import { loginSchema, LoginValues } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState, useTransition } from "react";
-import { Separator } from "@/components/ui/separator";
+import { useContext, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const LoginForm = () => {
-  const [error, setError] = useState<string>();
-  const [isPending, startTransition] = useTransition();
+  const { signInUserWithEmailPass } = useContext(AuthContext);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
+
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -27,17 +29,22 @@ const LoginForm = () => {
       password: "",
     },
   });
+
   const onSubmit = async (values: LoginValues) => {
-    setError(undefined);
-    console.log(values);
-    
-    startTransition(async () => {
-    //   const { error } = await login(values);
-    //   if (error) setError(error);
-    });
+    setError(null);
+    setIsPending(true);
+    try {
+      await signInUserWithEmailPass(values.email, values.password);
+    } catch (err) {
+      console.log(err);
+      setError("Login failed. Please try again.");
+    } finally {
+      setIsPending(false);
+    }
   };
+
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-1 w-full">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-4">
           {error && <p className="text-center text-red-500">{error}</p>}
@@ -88,8 +95,7 @@ const LoginForm = () => {
           </LoadingButton>
         </form>
       </Form>
-      <Separator />
-
+      <div className="divider">OR</div>
       <div className="flex gap-2">
         <Button variant={"outline"} className="rounded w-full">
           Google Login

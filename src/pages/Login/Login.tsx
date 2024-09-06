@@ -1,5 +1,6 @@
 import loginimg from "@/assets/loginimg.jpg";
 import LoginForm from "./components/LoginForm";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
@@ -13,7 +14,9 @@ const Login = () => {
             className="absolute inset-0 h-full w-full object-cover"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-8 px-32 bg-black bg-opacity-50">
-            <h1 className="text-4xl font-bold mb-4">Furni<span className="text-primary">Flex</span></h1>
+           <Link to="/">
+           
+           <h1 className="text-4xl font-bold mb-4">Furni<span className="text-primary">Flex</span></h1></Link>
             <p className="text-lg">
               Discover a seamless experience with Furniflex, where comfort meets style. Explore our range of high-quality furniture designed to elevate your living spaces.
             </p>

@@ -8,6 +8,8 @@ import Store from "./pages/Store";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import AuthProvider from "./contexts/AuthContext";
+import Cart from "./pages/Cart";
+import PrivateRoute from "./routes/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/store",
         element: <Store />,
+      },
+      {
+        path: "/cart",
+        element: <PrivateRoute><Cart></Cart></PrivateRoute>,
       },
     ],
   },
