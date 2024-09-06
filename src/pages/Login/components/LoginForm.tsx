@@ -14,13 +14,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { FcGoogle } from "react-icons/fc";
+import { FaApple } from "react-icons/fa";
 
 const LoginForm = () => {
-  const { signInUserWithEmailPass } = useContext(AuthContext);
+  const { signInUserWithEmailPass, loginWithGoogle, loginWithApple } = useContext(AuthContext);
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -35,11 +42,46 @@ const LoginForm = () => {
     setIsPending(true);
     try {
       await signInUserWithEmailPass(values.email, values.password);
+      toast({
+        title: "Logged in successfully",
+      });
+      form.reset();
+      navigate(from, { replace: true });
     } catch (err) {
       console.log(err);
+      toast({
+        variant: "destructive",
+        title: "Try again",
+      });
       setError("Login failed. Please try again.");
     } finally {
       setIsPending(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await loginWithGoogle();
+      navigate(from, { replace: true });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Try again",
+      });
+      console.log(err);
+    }
+  };
+
+  const handleAppleSignIn = async () => {
+    try {
+      await loginWithApple();
+      navigate(from, { replace: true });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Try again",
+      });
+      console.log(err);
     }
   };
 
@@ -97,11 +139,23 @@ const LoginForm = () => {
       </Form>
       <div className="divider">OR</div>
       <div className="flex gap-2">
-        <Button variant={"outline"} className="rounded w-full">
-          Google Login
+       
+        <Button
+          variant={"outline"}
+          className="rounded w-full flex items-center justify-center gap-2"
+          onClick={handleGoogleSignIn}
+        >
+          <FcGoogle className="w-5 h-5" /> 
+          Sign in with Google
         </Button>
-        <Button variant={"outline"} className="rounded w-full">
-          Apple Login
+       
+        <Button
+          variant={"outline"}
+          className="rounded w-full flex items-center justify-center gap-2"
+          onClick={handleAppleSignIn}
+        >
+          <FaApple className="w-5 h-5" /> 
+          Sign in with Apple
         </Button>
       </div>
       <p className="mt-2 text-sm text-gray-500 text-center">

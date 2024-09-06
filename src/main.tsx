@@ -4,12 +4,17 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import Homepage from "./pages/Homepage";
-import Store from "./pages/Store";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import AuthProvider from "./contexts/AuthContext";
 import Cart from "./pages/Cart";
 import PrivateRoute from "./routes/PrivateRoute";
+import { Toaster } from "./components/ui/toaster";
+import Store from "./pages/Store/Store";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -26,7 +31,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: <PrivateRoute><Cart></Cart></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <Cart></Cart>
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -43,7 +52,11 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <Toaster />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </AuthProvider>
   </StrictMode>
 );

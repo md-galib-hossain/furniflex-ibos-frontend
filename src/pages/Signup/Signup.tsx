@@ -35,9 +35,11 @@ const Signup = () => {
               <h1 className="text-xl font-bold text-gray-900 md:text-2xl">
                 Welcome To
               </h1>
-              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                Furni<span className="text-primary">Flex</span>
-              </h1>
+              <Link to="/">
+                <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
+                  Furni<span className="text-primary">Flex</span>
+                </h1>{" "}
+              </Link>
 
               <p className="mt-2 leading-relaxed text-gray-500">
                 Signup for purchase your desire products

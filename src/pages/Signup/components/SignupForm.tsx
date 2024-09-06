@@ -15,13 +15,17 @@ import { signupSchema, SignupValues } from "@/lib/validation";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/PasswordInput";
 import LoadingButton from "@/components/LoadingButton";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { FcGoogle } from "react-icons/fc";
+import { FaApple } from "react-icons/fa";
 const SignupForm = () => {
-  const { signUpUserWithEmailPass } = useContext(AuthContext);
+  const { signUpUserWithEmailPass, loginWithGoogle, loginWithApple } =
+    useContext(AuthContext);
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
-
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const form = useForm<SignupValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -35,15 +39,43 @@ const SignupForm = () => {
     setError(null);
     setIsPending(true);
     try {
-      await signUpUserWithEmailPass(
-        values.email,
-        values.password
-      );
+      await signUpUserWithEmailPass(values.email, values.password);
+      toast({
+        title: "Signed up successfully",
+      });
+      form.reset();
+      navigate("/login");
     } catch (error: any) {
       console.log(error);
       setError("Email already in use");
     } finally {
-      setIsPending(false); 
+      setIsPending(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await loginWithGoogle();
+      navigate("/");
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Try again",
+      });
+      console.log(err);
+    }
+  };
+
+  const handleAppleSignIn = async () => {
+    try {
+      await loginWithApple();
+      navigate("/");
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Try again",
+      });
+      console.log(err);
     }
   };
 
@@ -148,11 +180,22 @@ const SignupForm = () => {
       <div className="divider">OR</div>
 
       <div className="flex gap-2">
-        <Button variant={"outline"} className="rounded w-full">
-          Google Login
+        <Button
+          variant={"outline"}
+          className="rounded w-full flex items-center justify-center gap-2"
+          onClick={handleGoogleSignIn}
+        >
+          <FcGoogle className="w-5 h-5" />
+          Sign in with Google
         </Button>
-        <Button variant={"outline"} className="rounded w-full">
-          Apple Login
+
+        <Button
+          variant={"outline"}
+          className="rounded w-full flex items-center justify-center gap-2"
+          onClick={handleAppleSignIn}
+        >
+          <FaApple className="w-5 h-5" />
+          Sign in with Apple
         </Button>
       </div>
       <p className="mt-2 text-sm text-gray-500 text-center">
@@ -162,6 +205,7 @@ const SignupForm = () => {
         </Link>
         .
       </p>
+ 
     </div>
   );
 };

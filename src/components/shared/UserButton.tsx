@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import UserAvatarImg from "@/assets/avatar-placeholder.png";
 import { Check, LogOutIcon, Monitor, Moon, Sun } from "lucide-react";
-import { cn } from "@/lib/utils"; 
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,7 +18,7 @@ import {
 import { Link } from "react-router-dom";
 import { AuthContext } from "@/contexts/AuthContext";
 
-const UserButton = ({ user, className }: any) => {
+const UserButton = ({ user, className,loading }: any) => {
   const { logOutUser } = useContext(AuthContext);
   const [theme, setTheme] = useState<"light" | "dark">(
     (localStorage.getItem("theme") as "light" | "dark") || "light"
@@ -44,22 +44,38 @@ const UserButton = ({ user, className }: any) => {
       console.log(err);
     }
   };
+  console.log(!!user?.photoURL,"asd");
   return (
     <div className="cursor-pointer">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className={cn("flex-none rounded-full outline outline-2 outline-primary", className)}>
-            <img
-              src={user?.photoURL ? user.photoURL : UserAvatarImg}
+          <button
+            className={cn(
+              "flex-none rounded-full outline outline-2 outline-primary",
+              className
+            )}
+          >
+            {!loading && user?.photoUrl ? (
+              <img
+                src={user.photoURL}
+                alt="User Avatar"
+                className={`rounded-full w-10 h-10`}
+              />
+            ) : (
+              <img
+              src={UserAvatarImg}
               alt="User Avatar"
               className={`rounded-full w-10 h-10`}
             />
+            )}
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-            {
-                user?.email ? <DropdownMenuLabel>Logged in with {user?.email}</DropdownMenuLabel> : <DropdownMenuLabel>Please login</DropdownMenuLabel>
-            }
+          {user?.email ? (
+            <DropdownMenuLabel>Logged in with {user?.email}</DropdownMenuLabel>
+          ) : (
+            <DropdownMenuLabel>Please login</DropdownMenuLabel>
+          )}
           <DropdownMenuSeparator />
           {/* <DropdownMenuItem>
             <UserIcon className="mr-2 size-4" />
