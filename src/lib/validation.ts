@@ -5,3 +5,13 @@ export const loginSchema = z.object({
   password: requiredString,
 });
 export type LoginValues = z.infer<typeof loginSchema>;
+
+
+export const signupSchema = z.object({
+    email: z.string().email("Invalid email").nonempty("Email is required"),
+    password: requiredString,
+    firstName : requiredString,
+    lastName : requiredString
+  });
+  
+  export type SignupValues = z.infer<typeof signupSchema>;
