@@ -4,9 +4,9 @@ Welcome to the **E-commerce WebApp** project! This repository contains a full-st
 
 ## 📦 Key Links
 
-- **Live Application**: [E-commerce WebApp](https://ecommerce-webapp.vercel.app)
-- **Backend Repository**: [ecommerce-webapp-backend](https://github.com/yourusername/ecommerce-webapp-backend)
-- **Frontend Repository**: [ecommerce-webapp-frontend](https://github.com/yourusername/ecommerce-webapp-frontend)
+- **Live Application**: [E-commerce WebApp](https://furni-flex-bb9a1.web.app)
+- **Backend Repository**: [ecommerce-webapp-backend](https://github.com/md-galib-hossain/furniflex-ibos-backend)
+- **Frontend Repository**: [ecommerce-webapp-frontend](https://github.com/md-galib-hossain/furniflex-ibos-frontend)
 - **API Documentation**: [Postman Documentation](https://documenter.getpostman.com/view/28306094/2sAXjRVpLf)
 
 ## ⚠️ Challenges
