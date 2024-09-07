@@ -121,7 +121,7 @@ const Cart = () => {
         </div>
 
         {/* Order Summary */}
-        <div className="lg:w-1/3 p-6 bg-secondary rounded shadow-sm space-y-4">
+        <div className="lg:w-1/3 p-6 bg-secondary rounded shadow-sm space-y-4 max-h-80">
           <h2 className="text-2xl font-semibold">Order Details</h2>
           <div className="space-y-2">
             <div className="flex justify-between text-lg">

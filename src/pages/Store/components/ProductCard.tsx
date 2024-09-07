@@ -3,11 +3,20 @@ import { AuthContext } from "@/contexts/AuthContext";
 import useAddToCart from "@/hooks/useAddtoCart";
 import { IProduct } from "@/types/Product";
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product }: { product: IProduct }) => {
   const { user, loading: userLoading } = useContext(AuthContext);
-
-  const { _id, name, description, price, discountPercentage, finalPrice, imageUrl } = product;
+  const navigate = useNavigate();
+  const {
+    _id,
+    name,
+    description,
+    price,
+    discountPercentage,
+    finalPrice,
+    imageUrl,
+  } = product;
   const { mutate: addToCart } = useAddToCart();
 
   const [quantity] = useState(1);
@@ -15,16 +24,17 @@ const ProductCard = ({ product }: { product: IProduct }) => {
   const handleAddToCart = () => {
     if (!userLoading && user?.email) {
       const cartData = {
-        email: user.email, 
-        itemId: _id,      
-        itemPrice: finalPrice, 
-        quantity: quantity, 
-        itemImage: imageUrl, 
-        itemName: name
+        email: user.email,
+        itemId: _id,
+        itemPrice: finalPrice,
+        quantity: quantity,
+        itemImage: imageUrl,
+        itemName: name,
       };
 
       addToCart(cartData);
     }
+    navigate("/login");
   };
 
   return (
