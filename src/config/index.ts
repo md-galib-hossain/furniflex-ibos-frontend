@@ -10,6 +10,6 @@ export const config = {
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
   },
   stripe: {
-    payment_gateway_key: import.meta.env.VITE_PAYMENT_GATEWAY_PK,
+    payment_gateway_key: import.meta.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   },
 };
