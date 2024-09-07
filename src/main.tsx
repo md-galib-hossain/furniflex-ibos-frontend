@@ -7,12 +7,12 @@ import Homepage from "./pages/Homepage";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import AuthProvider from "./contexts/AuthContext";
-import Cart from "./pages/Cart";
 import PrivateRoute from "./routes/PrivateRoute";
 import { Toaster } from "./components/ui/toaster";
 import Store from "./pages/Store/Store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Cart from "./pages/Cart/Cart";
 
 const queryClient = new QueryClient();
 

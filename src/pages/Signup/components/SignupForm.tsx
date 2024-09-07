@@ -19,9 +19,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
+import useCreateUser from "@/hooks/useCreateUser";
 const SignupForm = () => {
   const { signUpUserWithEmailPass, loginWithGoogle, loginWithApple } =
     useContext(AuthContext);
+  const { mutate: createUser } = useCreateUser();
+
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const { toast } = useToast();
@@ -39,7 +42,17 @@ const SignupForm = () => {
     setError(null);
     setIsPending(true);
     try {
-      await signUpUserWithEmailPass(values.email, values.password);
+      const result = await signUpUserWithEmailPass(
+        values.email,
+        values.password
+      );
+
+      createUser({
+        displayName: `${values.firstName} ${values.lastName || ""}`,
+        email: values.email,
+        avatarUrl: result?.photoURL,
+      });
+
       toast({
         title: "Signed up successfully",
       });
@@ -55,7 +68,12 @@ const SignupForm = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await loginWithGoogle();
+      const result = await loginWithGoogle();
+      createUser({
+        displayName: result?.user?.displayName || `Anonymouse`,
+        email: result?.user.email,
+        avatarUrl: result?.user?.photoURL,
+      });
       navigate("/");
     } catch (err) {
       toast({
@@ -68,7 +86,12 @@ const SignupForm = () => {
 
   const handleAppleSignIn = async () => {
     try {
-      await loginWithApple();
+      const result = await loginWithApple();
+      createUser({
+        displayName: result?.user?.displayName || `Anonymouse`,
+        email: result?.user.email,
+        avatarUrl: result?.user?.photoURL,
+      });
       navigate("/");
     } catch (err) {
       toast({
@@ -205,7 +228,6 @@ const SignupForm = () => {
         </Link>
         .
       </p>
- 
     </div>
   );
 };

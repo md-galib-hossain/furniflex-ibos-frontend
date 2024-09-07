@@ -44,7 +44,7 @@ const UserButton = ({ user, className,loading }: any) => {
       console.log(err);
     }
   };
-  console.log(!!user?.photoURL,"asd");
+  console.log(user,"asd");
   return (
     <div className="cursor-pointer">
       <DropdownMenu>
@@ -55,9 +55,9 @@ const UserButton = ({ user, className,loading }: any) => {
               className
             )}
           >
-            {!loading && user?.photoUrl ? (
+            {!loading && user?.photoUrl  ? (
               <img
-                src={user.photoURL}
+                src={`${user.photoURL}`}
                 alt="User Avatar"
                 className={`rounded-full w-10 h-10`}
               />
@@ -72,7 +72,7 @@ const UserButton = ({ user, className,loading }: any) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {user?.email ? (
-            <DropdownMenuLabel>Logged in with {user?.email}</DropdownMenuLabel>
+            <DropdownMenuLabel>{user?.email}</DropdownMenuLabel>
           ) : (
             <DropdownMenuLabel>Please login</DropdownMenuLabel>
           )}

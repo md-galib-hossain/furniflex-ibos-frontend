@@ -19,9 +19,14 @@ import { AuthContext } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
+import useCreateUser from "@/hooks/useCreateUser";
 
 const LoginForm = () => {
-  const { signInUserWithEmailPass, loginWithGoogle, loginWithApple } = useContext(AuthContext);
+  const { signInUserWithEmailPass, loginWithGoogle, loginWithApple } =
+    useContext(AuthContext);
+
+  const { mutate: createUser } = useCreateUser();
+
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const { toast } = useToast();
@@ -61,7 +66,13 @@ const LoginForm = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await loginWithGoogle();
+      const result = await loginWithGoogle();
+      console.log(result,"check from hook google")
+      createUser({
+        displayName: result?.user?.displayName || `Anonymouse`,
+        email: result?.user.email,
+        avatarUrl: result?.user?.photoURL,
+      });
       navigate(from, { replace: true });
     } catch (err) {
       toast({
@@ -74,7 +85,13 @@ const LoginForm = () => {
 
   const handleAppleSignIn = async () => {
     try {
-      await loginWithApple();
+      const result = await loginWithApple();
+      console.log(result,"hahaha")
+      createUser({
+        displayName: result?.user?.displayName || `Anonymouse`,
+        email: result?.user.email,
+        avatarUrl: result?.user?.photoURL,
+      });
       navigate(from, { replace: true });
     } catch (err) {
       toast({
@@ -139,22 +156,21 @@ const LoginForm = () => {
       </Form>
       <div className="divider">OR</div>
       <div className="flex gap-2">
-       
         <Button
           variant={"outline"}
           className="rounded w-full flex items-center justify-center gap-2"
           onClick={handleGoogleSignIn}
         >
-          <FcGoogle className="w-5 h-5" /> 
+          <FcGoogle className="w-5 h-5" />
           Sign in with Google
         </Button>
-       
+
         <Button
           variant={"outline"}
           className="rounded w-full flex items-center justify-center gap-2"
           onClick={handleAppleSignIn}
         >
-          <FaApple className="w-5 h-5" /> 
+          <FaApple className="w-5 h-5" />
           Sign in with Apple
         </Button>
       </div>
