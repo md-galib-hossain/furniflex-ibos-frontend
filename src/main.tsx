@@ -13,6 +13,7 @@ import Store from "./pages/Store/Store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Cart from "./pages/Cart/Cart";
+import Payment from "./services/stripe/payment";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,15 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: "/payment",
+        element: (
+          <PrivateRoute>
+            <Payment></Payment>
+          </PrivateRoute>
+        ),
+      },
+     
     ],
   },
   {

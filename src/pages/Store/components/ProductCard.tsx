@@ -33,8 +33,10 @@ const ProductCard = ({ product }: { product: IProduct }) => {
       };
 
       addToCart(cartData);
+    }else if(!userLoading && !user?.email){
+      navigate("/login");
     }
-    navigate("/login");
+    
   };
 
   return (
@@ -52,7 +54,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
       <div className="mt-auto">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xl font-bold text-primary">
-            €{finalPrice.toFixed(2)}
+            ${finalPrice.toFixed(2)}
           </span>
           {discountPercentage > 0 && (
             <span className="text-sm text-red-500 font-semibold">

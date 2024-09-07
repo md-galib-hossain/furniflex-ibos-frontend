@@ -8,6 +8,7 @@ import useDeleteCartItem from "@/hooks/useDeleteFromCart";
 import useUpdateCartItemQuantity from "@/hooks/useUpdateCart";
 import useGetCartItems from "@/hooks/userGetCartItems";
 import { ICartItem } from "@/types/Cart";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const { user } = useContext(AuthContext);
@@ -112,7 +113,7 @@ const Cart = () => {
                     <X size={20} />
                   </button>
                 </div>
-                {item !== cartItems[cartItems.length - 1] && <Separator />}
+                {item !== cartItems[cartItems.length - 1] && <Separator className="mt-6"/>}
               </div>
             ))
           ) : (
@@ -134,7 +135,7 @@ const Cart = () => {
             </div>
             <div className="flex justify-between text-lg">
               <p>Estimated Tax</p>
-              <p>€ -</p>
+              <p>$ -</p>
             </div>
           </div>
           <Separator />
@@ -142,9 +143,11 @@ const Cart = () => {
             <p>Total</p>
             <p>{formatCurrency(subtotal)}</p>
           </div>
-          <Button size="lg" className="w-full rounded mt-4">
+        <Link to="/payment">
+        <Button size="lg" className="w-full rounded mt-4">
             Go to Checkout
           </Button>
+        </Link>
         </div>
       </div>
     </div>
